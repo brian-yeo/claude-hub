@@ -275,9 +275,13 @@ def lint_skill(skill_dir, portable=False, evals_dir=None):
                 body,
             )
             if not anchored:
+                # Printed in full because a skill body cannot document this form:
+                # the variable is substituted wherever it appears in SKILL.md,
+                # including inside prose, so written guidance renders as a path.
                 add("ERROR", "skill-dir",
-                    f"'{rel}' is referenced by a relative path; use ${{CLAUDE_SKILL_DIR}}/{rel} "
-                    "so it resolves from any working directory")
+                    f"'{rel}' is referenced by a relative path, which only resolves when the "
+                    f"working directory is the project root. Use ${{CLAUDE_SKILL_DIR}}/{rel} "
+                    f"in the body, and add: allowed-tools: Bash(${{CLAUDE_SKILL_DIR}}/{rel} *)")
 
             if not os.access(full, os.X_OK):
                 add("WARN", "scripts", f"'{rel}' is not executable (chmod +x)")

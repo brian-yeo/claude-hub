@@ -61,6 +61,12 @@ Skills in `.claude/skills/` are different from the copy-paste templates in `skil
 
 CI runs the same command on every PR. Or just ask Claude to `/skill-lint` your new skill, which also covers the judgement checks the script can't make.
 
+### The skill-directory variable is substituted everywhere
+
+It expands wherever it appears in a SKILL.md body — including inside prose and code fences, not just in commands you intend Claude to run. That's what makes bundled scripts portable, and it also means **a skill cannot document the variable in its own text**: written as guidance, it renders as that skill's own absolute path, which reads as an instruction to hardcode it.
+
+Use it in the commands you want run. If you need to *explain* it, point at the linter's error message, which prints the literal form.
+
 ### Restart your session after editing a skill
 
 Claude Code captures the available skills when a session starts. A skill you create mid-session isn't invocable, and — the one that actually bites — **editing a skill mid-session keeps serving the old content**, so you can spend a while wondering why your changes had no effect.

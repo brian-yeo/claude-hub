@@ -37,7 +37,9 @@ Run → fix → run again. Do not stop at the first clean-looking pass; fixing a
 
 ## What the errors mean
 
-**`skill-dir`** — a bundled script is referenced by a bare relative path. That only resolves when the working directory happens to be the project root, so the skill breaks the moment it runs anywhere else. Reference bundled files as `${CLAUDE_SKILL_DIR}/<file>`, and add a matching `allowed-tools: Bash(${CLAUDE_SKILL_DIR}/<file> *)` rule so it runs without a permission prompt.
+**`skill-dir`** — a bundled script is referenced by a bare relative path. That only resolves when the working directory happens to be the project root, so the skill breaks the moment it runs anywhere else. The fix is in the linter's own error message: it prints the exact skill-directory variable and the corrected path to use. Put that form in the body, and add an `allowed-tools` Bash rule using the same form so the script runs without a permission prompt.
+
+> The error message is the reference here rather than this paragraph, because the variable is substituted wherever it appears in a skill body — including inside prose and code fences. Writing it literally here would render as *this* skill's directory and tell you to hardcode the wrong path.
 
 **`nesting`** — a reference file links to another reference file. Claude often previews nested files with a partial read instead of reading them whole, so the information at the bottom is silently missed. Keep every reference one level deep from SKILL.md.
 
