@@ -61,6 +61,12 @@ Skills in `.claude/skills/` are different from the copy-paste templates in `skil
 
 CI runs the same command on every PR. Or just ask Claude to `/skill-lint` your new skill, which also covers the judgement checks the script can't make.
 
+### Restart your session after editing a skill
+
+Claude Code captures the available skills when a session starts. A skill you create mid-session isn't invocable, and — the one that actually bites — **editing a skill mid-session keeps serving the old content**, so you can spend a while wondering why your changes had no effect.
+
+The linter and the scripts read from disk and always reflect your edits. Only the loaded skill body is stale. Start a fresh session before testing a skill change, and remember the [evaluation baseline](evals/README.md) is only meaningful if both runs used the same version.
+
 ## Updating Baseline
 
 Changes to `baseline/` files affect everyone. When you update baseline files:
