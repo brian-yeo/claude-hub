@@ -45,6 +45,22 @@ Anyone on the team can add new skills and agents via pull request.
 4. Open a PR with a short description
 5. One approval required to merge
 
+## Adding a Claude Code Skill
+
+Skills in `.claude/skills/` are different from the copy-paste templates in `skills/` — Claude loads them automatically, so they follow the [Agent Skills](https://agentskills.io) format rather than the template format above.
+
+1. Create `.claude/skills/<name>/SKILL.md` with `name` and `description` frontmatter
+2. Write a description that says **what it does and when to use it**, with concrete trigger phrases — it's the only thing loaded at startup and the only reason the skill ever fires
+3. Reference any bundled script as `${CLAUDE_SKILL_DIR}/<script>`, never a bare relative path, and add a matching `allowed-tools: Bash(${CLAUDE_SKILL_DIR}/<script> *)` rule
+4. Add at least three evaluations to `evals/<name>.json` — see [`evals/README.md`](evals/README.md)
+5. Run the linter until it's clean:
+
+```bash
+.claude/skills/skill-lint/lint.py --strict --evals evals .claude/skills
+```
+
+CI runs the same command on every PR. Or just ask Claude to `/skill-lint` your new skill, which also covers the judgement checks the script can't make.
+
 ## Updating Baseline
 
 Changes to `baseline/` files affect everyone. When you update baseline files:

@@ -1,0 +1,44 @@
+[
+  {
+    "skills": [
+      "digest"
+    ],
+    "query": "Summarize these for me.",
+    "files": [
+      "four sources that report materially different numbers for the same metric"
+    ],
+    "expected_behavior": [
+      "States the disagreement explicitly and characterizes its likely cause",
+      "Does not average or blend the conflicting figures into a single consensus number",
+      "Attributes every claim to a specific source"
+    ]
+  },
+  {
+    "skills": [
+      "digest"
+    ],
+    "query": "Catch me up on this topic.",
+    "files": [
+      "a set of links where one is paywalled and cannot be read"
+    ],
+    "expected_behavior": [
+      "States plainly that the paywalled source could not be read",
+      "Does not infer or summarize that source's contents from its title or URL",
+      "Completes the digest from the sources it could actually read"
+    ]
+  },
+  {
+    "skills": [
+      "digest"
+    ],
+    "query": "Is this worth reading?",
+    "files": [
+      "a vendor's own benchmark post plus an independent third-party test"
+    ],
+    "expected_behavior": [
+      "Marks the vendor's figures as coming from a party with a stake",
+      "Grades sources by date, author incentive, and whether claims are measured or asserted",
+      "Organizes the briefing by claim rather than using source names as section headings"
+    ]
+  }
+]

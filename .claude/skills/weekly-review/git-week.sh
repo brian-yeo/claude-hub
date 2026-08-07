@@ -14,7 +14,13 @@
 
 set -uo pipefail
 
+# One week, matching the review cadence this feeds. Override with -d.
 DAYS=7
+
+# Branches listed per repo, most-recently-committed first. Five is enough to show
+# what's in flight without printing every stale branch in a long-lived repo.
+BRANCHES_SHOWN=5
+
 AUTHOR="__unset__"
 SCAN_DIR=""
 REPOS=()
@@ -139,7 +145,7 @@ for repo in "${REPOS[@]}"; do
   echo "   ---- $C commit(s), $F distinct file(s), +$A/-$D"
 
   BR="$(git -C "$repo" for-each-ref --sort=-committerdate refs/heads \
-        --format='%(refname:short) (%(committerdate:relative))' 2>/dev/null | head -5 || true)"
+        --format='%(refname:short) (%(committerdate:relative))' 2>/dev/null | head -"$BRANCHES_SHOWN" || true)"
   if [[ -n "$BR" ]]; then
     echo "   branches, most recent first:"
     printf '%s\n' "$BR" | sed 's/^/     /'

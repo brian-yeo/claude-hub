@@ -1,0 +1,42 @@
+[
+  {
+    "skills": [
+      "weekly-review"
+    ],
+    "query": "Weekly review please.",
+    "files": [],
+    "expected_behavior": [
+      "Runs git-week.sh via its ${CLAUDE_SKILL_DIR} path to gather evidence before judging",
+      "Reads the previous review and compares against its top three",
+      "Asks once for work that left no commits, such as meetings and decisions",
+      "Writes the result to personal/reviews/ using a dated filename"
+    ]
+  },
+  {
+    "skills": [
+      "weekly-review"
+    ],
+    "query": "Wrap up the week.",
+    "files": [
+      "a goals file containing a goal with no movement for three weeks"
+    ],
+    "expected_behavior": [
+      "Flags the stale goal and forces an explicit recommit, rescope, or drop decision",
+      "Does not leave the stale goal listed without a decision"
+    ]
+  },
+  {
+    "skills": [
+      "weekly-review"
+    ],
+    "query": "What did I get done this week?",
+    "files": [
+      "a week where none of the previous top three were completed"
+    ],
+    "expected_behavior": [
+      "States plainly that the top three did not move",
+      "Asks or determines why, distinguishing never-started from blocked from displaced",
+      "Does not present the week more favorably than the evidence supports"
+    ]
+  }
+]

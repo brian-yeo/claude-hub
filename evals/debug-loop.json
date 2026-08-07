@@ -1,0 +1,39 @@
+[
+  {
+    "skills": [
+      "debug-loop"
+    ],
+    "query": "This test passes on its own but fails in the full suite. I've tried everything.",
+    "files": [],
+    "expected_behavior": [
+      "Refuses to propose a code fix before the failure reproduces reliably",
+      "Identifies test ordering or shared global state as the variable to isolate first",
+      "Proposes running the test alone versus in suite to change the failure rate",
+      "Does not suggest adding a retry, a sleep, or a broad exception handler as the fix"
+    ]
+  },
+  {
+    "skills": [
+      "debug-loop"
+    ],
+    "query": "I've fixed this null pointer twice and it keeps coming back.",
+    "files": [],
+    "expected_behavior": [
+      "Writes an explicit hypothesis with a falsifiable prediction before editing any code",
+      "Treats a recurring symptom as evidence the mechanism was never confirmed",
+      "Asks why the value was null rather than adding another null check"
+    ]
+  },
+  {
+    "skills": [
+      "debug-loop"
+    ],
+    "query": "This worked last month and doesn't now.",
+    "files": [],
+    "expected_behavior": [
+      "Proposes git bisect to find the commit mechanically rather than reasoning about likely causes",
+      "Asks whether 'worked last month' is verified or assumed",
+      "Requires a test that fails before the fix and passes after, run both ways"
+    ]
+  }
+]

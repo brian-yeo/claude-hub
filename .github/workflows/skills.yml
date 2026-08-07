@@ -1,0 +1,45 @@
+name: skills
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - '.claude/skills/**'
+      - 'evals/**'
+      - '.github/workflows/skills.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Checks the Agent Skills spec rules and Anthropic's authoring checklist:
+      # frontmatter validity, description quality, body length, reference nesting,
+      # script portability, and at least three evaluations per skill.
+      # --strict fails on warnings so drift is caught while it is still one skill.
+      - name: Lint skills
+        run: python3 .claude/skills/skill-lint/lint.py --strict --evals evals .claude/skills
+
+      - name: Check bundled scripts parse
+        run: |
+          status=0
+          while IFS= read -r f; do
+            bash -n "$f" || status=1
+          done < <(find .claude/skills -name '*.sh')
+          while IFS= read -r f; do
+            python3 -m py_compile "$f" || status=1
+          done < <(find .claude/skills -name '*.py')
+          exit $status
+
+      - name: Check bundled scripts are executable
+        run: |
+          status=0
+          while IFS= read -r f; do
+            if [ ! -x "$f" ]; then
+              echo "not executable: $f (run chmod +x)"
+              status=1
+            fi
+          done < <(find .claude/skills \( -name '*.sh' -o -name '*.py' \))
+          exit $status

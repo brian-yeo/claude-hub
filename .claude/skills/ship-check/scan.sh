@@ -51,6 +51,19 @@ echo
 
 TAB=$'\t'
 
+# ---------- tunables ----------
+# Show at most this many hits per finding group. Enough to see whether a finding is
+# systemic or a one-off, without a single noisy pattern burying every other group.
+MAX_HITS_PER_GROUP=25
+
+# Flag files larger than this. 500K is well above any hand-written source file but
+# below typical build bundles and checked-in binaries, which are what this catches.
+LARGE_FILE_BYTES=512000
+
+# Commit messages shorter than this are almost always placeholders ("fix", "wip",
+# "typo"). Twelve characters is about the shortest a real "why" can be written in.
+MIN_COMMIT_MSG_CHARS=12
+
 # Stream of added lines as  path:lineno<TAB>content  — real file locations, taken from
 # the hunk headers, so every finding below points at somewhere you can actually go.
 ADDED="$(
@@ -74,9 +87,9 @@ report() { # <label> <newline-separated hits>
   [[ -n "$hits" ]] || return 0
   note
   echo "[$label]"
-  printf '%s\n' "$hits" | head -25 | sed $'s/\t/  |  /' | sed 's/^/    /'
+  printf '%s\n' "$hits" | head -"$MAX_HITS_PER_GROUP" | sed $'s/\t/  |  /' | sed 's/^/    /'
   local n; n="$(printf '%s\n' "$hits" | wc -l | tr -d ' ')"
-  (( n > 25 )) && echo "    … and $(( n - 25 )) more"
+  (( n > MAX_HITS_PER_GROUP )) && echo "    … and $(( n - MAX_HITS_PER_GROUP )) more"
   echo
 }
 
@@ -129,11 +142,11 @@ BIG=""
 while IFS= read -r -d '' f; do
   [[ -f "$f" ]] || continue
   sz=$(wc -c <"$f" 2>/dev/null || echo 0)
-  if (( sz > 512000 )); then
+  if (( sz > LARGE_FILE_BYTES )); then
     BIG+="$(( sz / 1024 ))K${TAB}$f"$'\n'
   fi
 done < <(git diff --name-only -z "$MERGE_BASE" -- 2>/dev/null)
-report "large file (>500K)" "$(printf '%s' "$BIG")"
+report "large file (>$(( LARGE_FILE_BYTES / 1024 ))K)" "$(printf '%s' "$BIG")"
 scan_files "build output or vendored code in diff" '\.min\.(js|css)$|(^|/)(dist|build|out|vendor|node_modules)/'
 
 # ---------- 5. commits ----------
@@ -145,11 +158,11 @@ if [[ -z "$COMMITS" ]]; then
 else
   printf '%s\n' "$COMMITS" | sed 's/^/    /'
   echo
-  WEAK="$(printf '%s\n' "$COMMITS" | awk '
+  WEAK="$(printf '%s\n' "$COMMITS" | awk -v MINLEN="$MIN_COMMIT_MSG_CHARS" '
     {
       msg = substr($0, index($0, " ") + 1)
       low = tolower(msg)
-      if (length(msg) < 12 || low ~ /^(wip|fix|fixes|fixed|update|updates|updated|change|changes|stuff|temp|tmp|test|asdf|cleanup|minor|misc|oops|typo|more|again|\.+)$/) print
+      if (length(msg) < MINLEN || low ~ /^(wip|fix|fixes|fixed|update|updates|updated|change|changes|stuff|temp|tmp|test|asdf|cleanup|minor|misc|oops|typo|more|again|\.+)$/) print
     }')"
   report "low-information commit message" "$WEAK"
 fi

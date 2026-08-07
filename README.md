@@ -80,21 +80,33 @@ They're personal working tools rather than company templates, and they carry no 
 | `weekly-review` | Friday review built from git history rather than memory, written to `personal/reviews/` |
 | `decision-log` | Record a decision with its real reasoning and what would change your mind |
 | `goals` | Keep goals observable, and force a decision on anything that's gone stale |
+| `skill-lint` | Check any skill against Anthropic's published authoring rules |
 
-Two of them ship with scripts that do the mechanical part before Claude reasons about the result:
+Three ship with scripts that do the mechanical part before Claude reasons about the result. All are read-only:
 
 ```bash
-.claude/skills/ship-check/scan.sh                  # scan the branch diff for problems
-.claude/skills/weekly-review/git-week.sh -s ~/code # what you committed this week, all repos
+.claude/skills/ship-check/scan.sh                   # scan the branch diff for problems
+.claude/skills/weekly-review/git-week.sh -s ~/code  # what you committed this week, all repos
+.claude/skills/skill-lint/lint.py --evals evals .claude/skills
 ```
 
-Both are read-only and take `-h` or a base ref as an argument.
+Inside a skill they're referenced as `${CLAUDE_SKILL_DIR}/<script>`, which is what lets them run from any working directory — you can use `/ship-check` in a completely different repo and it still finds its scanner.
 
 ### Getting started
 
 Open Claude Code in this repo and run `/goals`, then `/draft` to build your voice profile from a few writing samples. `/weekly-review` gets more useful each week, since it compares against the last one.
 
 See [`personal/README.md`](personal/README.md) for where each skill stores its output — **including a note on privacy if this repo is shared with your team.**
+
+### How these are built
+
+The skills follow Anthropic's [skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices), and `skill-lint` enforces the mechanical half of that guidance on every PR via [CI](.github/workflows/skills.yml). Three constraints shape how they're written:
+
+- **Descriptions are the only trigger.** Only `name` and `description` load at startup; the body loads when the skill fires. A description that doesn't name concrete trigger phrases doesn't fire.
+- **Bodies stay short because they persist.** Once loaded, a skill's content stays in context for the rest of the session, so every line is a recurring cost on every later turn — not a one-time one. All bodies are ~60–105 lines against a 500-line guideline.
+- **Frontmatter stays inside the [Agent Skills spec](https://agentskills.io)'s six fields.** Claude Code accepts about twenty, but claude.ai uploads and the Skills API reject anything outside the spec with a hard error. Staying portable costs a couple of Claude Code-only features; the reasoning is written up in [`personal/decisions/`](personal/decisions/).
+
+[`evals/`](evals/README.md) holds three evaluations per skill in Anthropic's documented format. They're the baseline for telling whether an edit to a skill actually helped — the case each one targets is a specific way Claude gets the task wrong *without* the skill.
 
 ## Contributing
 

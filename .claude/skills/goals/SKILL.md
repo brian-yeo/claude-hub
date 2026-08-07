@@ -1,25 +1,28 @@
 ---
 name: goals
-description: Maintain and check in on goals in personal/goals.md — write them so progress is observable, review what actually moved, and force a decision on anything stale. Use when the user sets a new goal, asks "how am I tracking", "what are my goals", "am I making progress on X", wants to drop or rewrite a goal, or at the start of a month or quarter.
+description: Maintains and checks in on goals in personal/goals.md — keeps them written so progress is observable, reviews what actually moved, and forces a decision on anything stale. Use when the user sets a new goal, asks "how am I tracking", "what are my goals", "am I making progress on X", wants to drop or rewrite a goal, or at the start of a month or quarter.
 ---
 
 # Goals
 
-Keeps `personal/goals.md` honest. Most goal lists fail the same two ways: the goals are written so vaguely that nobody can tell whether they moved, and dead goals are never removed, so the list becomes something to avoid looking at.
+Most goal lists fail two ways: the goals are too vague to tell whether they moved, and dead goals are never removed, so the list becomes something to avoid looking at. This exists to prevent both.
 
-This skill exists to prevent both.
+## Standing rules
+
+- **Read `personal/goals.md` first.** Create it from the format below if missing.
+- **Maximum five active goals.** A sixth requires dropping one — make the user choose rather than growing the list silently. Five you're advancing beats twelve you're vaguely intending.
+- **Never delete a goal outright.** Move it to Achieved or Dropped. The pattern in what gets dropped is worth more than any single goal.
+- **Be direct about stalled goals without nagging.** Name it once, offer the three options, accept the answer. The user isn't accountable to you — the file just has to be true.
 
 ## Modes
 
-**SET** — add or rewrite a goal · **CHECK** — review progress · **CLOSE** — finish or drop one
-
-Always read `personal/goals.md` first. If it doesn't exist, create it from the structure below.
+**SET** (add or rewrite) · **CHECK** (review progress) · **CLOSE** (finish or drop)
 
 ---
 
-## Mode: SET
+## SET
 
-A goal goes on the list only if it has all three of these. Push back until it does — this is the useful part of the skill, not bureaucracy.
+A goal goes on the list only with all three of these. Push back until it has them — this is the useful part, not bureaucracy.
 
 **1. An observable signal.** Someone outside your head can tell whether it moved.
 
@@ -30,42 +33,38 @@ A goal goes on the list only if it has all three of these. Push back until it do
 | Improve the deploy process | Deploy takes under 10 minutes, no manual steps |
 | Read more | Finish one book a month, logged |
 
-**2. A horizon.** When does this stop being current? A goal without an end date can't be missed, so it can't be evaluated.
+**2. A horizon.** A goal without an end date can't be missed, so it can't be evaluated.
 
-**3. A next physical action.** The specific thing you could do in the next hour. If you can't name it, the goal isn't ready — it needs decomposing, not motivation.
+**3. A next physical action** — the specific thing doable in the next hour. If you can't name it, the goal needs decomposing, not motivation.
 
-**Cap the list at five active goals.** Adding a sixth means dropping one; make the user choose rather than silently growing the list. Five things you're actually advancing beats twelve you're vaguely intending.
-
-Separate **goals** from **projects** and **maintenance**. "Renew the domain" isn't a goal, it's a task. "Keep the tests green" isn't a goal, it's the job. Goals are things that change the state of the world if they succeed.
+**Separate goals from projects and maintenance.** "Renew the domain" is a task. "Keep the tests green" is the job. Goals change the state of the world if they succeed.
 
 ---
 
-## Mode: CHECK
+## CHECK
 
-1. For each goal: what moved since the last check? Ask for evidence, not a feeling — a commit, a published thing, a number. `/weekly-review` output is good input here.
+1. What moved since the last check? Ask for **evidence, not a feeling** — a commit, a published thing, a number. `/weekly-review` output is good input.
 2. Update `Last moved` on anything that moved.
-3. Apply the staleness rule below.
+3. Apply the staleness rule.
 4. Report plainly: what's advancing, what's stalled, what needs a decision today.
 
-### The staleness rule
+### Staleness rule
 
-**No movement in three weeks → the goal gets a forced decision.** One of:
+**No movement in three weeks → forced decision.** One of:
 
-- **Recommit** — it still matters. Then it needs a next action *this week*, and a reason it stalled. "I'll try harder" doesn't count as a reason.
-- **Rescope** — it matters but it's too big or the world changed. Rewrite it smaller.
-- **Drop** — it doesn't matter enough right now. Move it to `## Dropped` with one line on why.
+- **Recommit** — it still matters. Needs a next action *this week*, and a reason it stalled. "I'll try harder" is not a reason.
+- **Rescope** — it matters but it's too big, or the world changed. Rewrite it smaller.
+- **Drop** — it doesn't matter enough right now.
 
-Dropping is a success, not a failure. A list of five live goals is worth more than a list of twelve where seven are dead and everyone knows it.
-
-Do not let the user leave a stale goal in place with no decision. Surface it every time until it's resolved — that persistence is the entire mechanism.
+Dropping is a success. Do not let a stale goal sit with no decision — surface it every time until it's resolved. That persistence is the entire mechanism.
 
 ---
 
-## Mode: CLOSE
+## CLOSE
 
-**Achieved:** move to `## Achieved` with the date and what actually resulted. Ask whether the result was worth the effort — the answer shapes the next goal.
+**Achieved:** move to `## Achieved` with the date and what actually resulted. Ask whether it was worth the effort — the answer shapes the next goal.
 
-**Dropped:** move to `## Dropped` with one honest line. "Lost interest", "wrong priority", "solved another way" are all fine. Never delete a goal outright; the pattern in what you drop is worth more than any single goal.
+**Dropped:** move to `## Dropped` with one honest line. "Lost interest", "wrong priority", "solved another way" are all fine.
 
 ---
 
@@ -92,7 +91,3 @@ Do not let the user leave a stale goal in place with no decision. Surface it eve
 ## Dropped
 - **<goal>** — <date>. <why, in one honest line>
 ```
-
-## Tone
-
-Be direct about stalled goals without being a nag about it. Name it once, clearly, offer the three options, and accept the answer. The user isn't accountable to you — the file just has to be true.

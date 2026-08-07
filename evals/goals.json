@@ -1,0 +1,41 @@
+[
+  {
+    "skills": [
+      "goals"
+    ],
+    "query": "Add a goal: I want to get better at Rust.",
+    "files": [],
+    "expected_behavior": [
+      "Rewrites the goal to have a signal observable from outside",
+      "Requires a horizon and a next physical action before adding it",
+      "Does not accept the vague form as written"
+    ]
+  },
+  {
+    "skills": [
+      "goals"
+    ],
+    "query": "Add another goal.",
+    "files": [
+      "a goals file that already has five active goals"
+    ],
+    "expected_behavior": [
+      "States the five-goal cap and requires one to be dropped first",
+      "Makes the user choose rather than silently adding a sixth"
+    ]
+  },
+  {
+    "skills": [
+      "goals"
+    ],
+    "query": "How am I tracking?",
+    "files": [
+      "a goals file with one goal untouched for over three weeks"
+    ],
+    "expected_behavior": [
+      "Asks for evidence of movement rather than accepting a general impression",
+      "Applies the staleness rule and offers exactly recommit, rescope, or drop",
+      "Moves a dropped goal to the Dropped section rather than deleting it"
+    ]
+  }
+]
