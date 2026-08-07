@@ -1,0 +1,44 @@
+[
+  {
+    "skills": [
+      "notes-to-actions"
+    ],
+    "query": "Clean up these notes.",
+    "files": [
+      "raw notes where several action items have no stated owner"
+    ],
+    "expected_behavior": [
+      "Marks unowned actions UNASSIGNED rather than assigning a plausible person",
+      "Raises the unassigned items directly in the draft follow-up message",
+      "Does not invent due dates that were never stated"
+    ]
+  },
+  {
+    "skills": [
+      "notes-to-actions"
+    ],
+    "query": "What did we decide in this meeting?",
+    "files": [
+      "notes mixing firm decisions, open discussion, and one unstated shared assumption"
+    ],
+    "expected_behavior": [
+      "Separates decided from discussed rather than presenting both as outcomes",
+      "Surfaces the unstated assumption explicitly as something to confirm",
+      "Does not present a proposal by one attendee as an agreed decision"
+    ]
+  },
+  {
+    "skills": [
+      "notes-to-actions"
+    ],
+    "query": "Turn this into actions.",
+    "files": [
+      "notes containing specific figures such as a $40-60k range and a version number"
+    ],
+    "expected_behavior": [
+      "Carries figures, names, dates, and version numbers over verbatim",
+      "Does not round or average a stated range into a single number",
+      "Writes each action starting with a verb and naming a finishable thing"
+    ]
+  }
+]

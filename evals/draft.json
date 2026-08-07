@@ -1,0 +1,45 @@
+[
+  {
+    "skills": [
+      "draft"
+    ],
+    "query": "Make this tighter.",
+    "files": [
+      "a 400-word email opening with 'I wanted to reach out' and several stacked hedges"
+    ],
+    "expected_behavior": [
+      "Cuts roughly 30-50% without changing meaning",
+      "Removes throat-clearing openers, stacked hedges, and meta-commentary",
+      "Reports the before and after word count",
+      "Groups what it cut by reason rather than listing line by line"
+    ]
+  },
+  {
+    "skills": [
+      "draft"
+    ],
+    "query": "Draft an announcement for this change.",
+    "files": [
+      "a request made in a repo with no personal/voice.md"
+    ],
+    "expected_behavior": [
+      "Says once that the voice profile is missing and offers to build one",
+      "Writes in a plain, direct register instead of inventing a personality",
+      "Leads with the point and closes with a next step rather than a pleasantry"
+    ]
+  },
+  {
+    "skills": [
+      "draft"
+    ],
+    "query": "Cut this down.",
+    "files": [
+      "a status update whose central claim is genuinely uncertain and hedged for good reason"
+    ],
+    "expected_behavior": [
+      "Preserves the hedge on the genuinely uncertain claim",
+      "Preserves concrete specifics such as measured numbers rather than generalizing them",
+      "Flags any cut it declined to make and why"
+    ]
+  }
+]

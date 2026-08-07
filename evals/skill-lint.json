@@ -1,0 +1,44 @@
+[
+  {
+    "skills": [
+      "skill-lint"
+    ],
+    "query": "Check this skill before I commit it.",
+    "files": [
+      "a skill whose SKILL.md references its bundled script by a bare relative path"
+    ],
+    "expected_behavior": [
+      "Runs lint.py and reports the skill-dir error",
+      "Explains that a relative path only resolves when the working directory is the project root",
+      "Recommends ${CLAUDE_SKILL_DIR} plus a matching allowed-tools rule"
+    ]
+  },
+  {
+    "skills": [
+      "skill-lint"
+    ],
+    "query": "I want to upload this skill to claude.ai. Is it ready?",
+    "files": [
+      "a skill using context: fork and argument-hint"
+    ],
+    "expected_behavior": [
+      "Runs the linter in --portable mode",
+      "Identifies both fields as Claude Code-only and states that packaging fails on them",
+      "Names the six fields the Agent Skills spec allows"
+    ]
+  },
+  {
+    "skills": [
+      "skill-lint"
+    ],
+    "query": "Why isn't my skill firing?",
+    "files": [
+      "a skill whose description states what it does but never when to use it"
+    ],
+    "expected_behavior": [
+      "Identifies the missing trigger conditions in the description",
+      "Explains that the description is the only signal loaded at startup",
+      "Suggests concrete trigger phrasings rather than only saying to be more specific"
+    ]
+  }
+]

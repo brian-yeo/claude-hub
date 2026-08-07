@@ -2,3 +2,7 @@
 *.swp
 *.swo
 *~
+
+# Python bytecode from skill-lint
+__pycache__/
+*.pyc

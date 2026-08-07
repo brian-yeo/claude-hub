@@ -1,0 +1,42 @@
+[
+  {
+    "skills": [
+      "decision-log"
+    ],
+    "query": "Log this decision: we're staying on the current queue because migrating is too disruptive right now.",
+    "files": [],
+    "expected_behavior": [
+      "Records the real reason including inertia or sunk cost, rather than reframing it as a technical argument",
+      "Records what is being given up by not migrating",
+      "Sets an explicit review date"
+    ]
+  },
+  {
+    "skills": [
+      "decision-log"
+    ],
+    "query": "Help me decide between these two database options.",
+    "files": [],
+    "expected_behavior": [
+      "Asks what is actually being optimized for before comparing",
+      "Generates a third option rather than accepting the binary",
+      "Assesses reversibility and scales the deliberation to it",
+      "Ends with a clear recommendation rather than a balanced survey"
+    ]
+  },
+  {
+    "skills": [
+      "decision-log"
+    ],
+    "query": "This decision we made six months ago turned out badly.",
+    "files": [
+      "an existing decision entry with a 'what would change my mind' section"
+    ],
+    "expected_behavior": [
+      "Reads the original entry before forming a view",
+      "Checks whether any stated trigger actually fired",
+      "Appends an outcome and supersedes rather than editing the original entry",
+      "Judges the decision on what was knowable at the time, not only on the outcome"
+    ]
+  }
+]

@@ -45,6 +45,34 @@ Anyone on the team can add new skills and agents via pull request.
 4. Open a PR with a short description
 5. One approval required to merge
 
+## Adding a Claude Code Skill
+
+Skills in `.claude/skills/` are different from the copy-paste templates in `skills/` — Claude loads them automatically, so they follow the [Agent Skills](https://agentskills.io) format rather than the template format above.
+
+1. Create `.claude/skills/<name>/SKILL.md` with `name` and `description` frontmatter
+2. Write a description that says **what it does and when to use it**, with concrete trigger phrases — it's the only thing loaded at startup and the only reason the skill ever fires
+3. Reference any bundled script as `${CLAUDE_SKILL_DIR}/<script>`, never a bare relative path, and add a matching `allowed-tools: Bash(${CLAUDE_SKILL_DIR}/<script> *)` rule
+4. Add at least three evaluations to `evals/<name>.json` — see [`evals/README.md`](evals/README.md)
+5. Run the linter until it's clean:
+
+```bash
+.claude/skills/skill-lint/lint.py --strict --evals evals .claude/skills
+```
+
+CI runs the same command on every PR. Or just ask Claude to `/skill-lint` your new skill, which also covers the judgement checks the script can't make.
+
+### The skill-directory variable is substituted everywhere
+
+It expands wherever it appears in a SKILL.md body — including inside prose and code fences, not just in commands you intend Claude to run. That's what makes bundled scripts portable, and it also means **a skill cannot document the variable in its own text**: written as guidance, it renders as that skill's own absolute path, which reads as an instruction to hardcode it.
+
+Use it in the commands you want run. If you need to *explain* it, point at the linter's error message, which prints the literal form.
+
+### Restart your session after editing a skill
+
+Claude Code captures the available skills when a session starts. A skill you create mid-session isn't invocable, and — the one that actually bites — **editing a skill mid-session keeps serving the old content**, so you can spend a while wondering why your changes had no effect.
+
+The linter and the scripts read from disk and always reflect your edits. Only the loaded skill body is stale. Start a fresh session before testing a skill change, and remember the [evaluation baseline](evals/README.md) is only meaningful if both runs used the same version.
+
 ## Updating Baseline
 
 Changes to `baseline/` files affect everyone. When you update baseline files:

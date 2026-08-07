@@ -1,0 +1,39 @@
+[
+  {
+    "skills": [
+      "repo-onboard"
+    ],
+    "query": "Get me up to speed on this repo.",
+    "files": [],
+    "expected_behavior": [
+      "Reads manifests and CI config before reading source, and treats CI as the authoritative build/test procedure",
+      "Actually runs the build and the test suite rather than asserting they work, and reports real output",
+      "Traces one representative operation end to end, naming real files and functions at each hop",
+      "Does not merely restate directory names as if that were architecture"
+    ]
+  },
+  {
+    "skills": [
+      "repo-onboard"
+    ],
+    "query": "Where would I add a new API endpoint in this codebase?",
+    "files": [],
+    "expected_behavior": [
+      "Names the specific files to change, in order",
+      "Identifies the test that would confirm the change works",
+      "Grounds the answer in an existing endpoint's actual code path rather than general convention"
+    ]
+  },
+  {
+    "skills": [
+      "repo-onboard"
+    ],
+    "query": "Map this repo for me. Note: the README setup steps are out of date.",
+    "files": [],
+    "expected_behavior": [
+      "Verifies setup against CI config and the code rather than trusting the README",
+      "Records the specific places docs and code disagree as a finding, near the top of the map",
+      "Reports any build or test failure verbatim instead of omitting or softening it"
+    ]
+  }
+]

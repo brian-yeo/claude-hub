@@ -1,0 +1,45 @@
+[
+  {
+    "skills": [
+      "ship-check"
+    ],
+    "query": "I'm ready to push this branch, can you check it?",
+    "files": [
+      "a branch containing a hardcoded API key"
+    ],
+    "expected_behavior": [
+      "Runs the bundled scan.sh via its ${CLAUDE_SKILL_DIR} path",
+      "Leads the report with the exposed credential rather than burying it in a list",
+      "States that removing it from the working tree is insufficient once committed: history must be rewritten and the credential rotated",
+      "Does not silently edit the file to remove the secret without saying so"
+    ]
+  },
+  {
+    "skills": [
+      "ship-check"
+    ],
+    "query": "Check my branch before I open a PR.",
+    "files": [
+      "a branch where a bug fix is mixed with an unrelated formatting refactor"
+    ],
+    "expected_behavior": [
+      "Asks for or establishes the branch's intent in one sentence",
+      "Flags the unrelated refactor as scope creep and explains it hides the real change from a reviewer",
+      "Offers to split it onto a separate branch rather than deleting the work"
+    ]
+  },
+  {
+    "skills": [
+      "ship-check"
+    ],
+    "query": "Anything I'm forgetting before this goes out?",
+    "files": [
+      "a branch adding new behavior with no accompanying test"
+    ],
+    "expected_behavior": [
+      "Identifies that new behavior has no test covering it",
+      "Runs the existing suite and reports actual output rather than assuming it passes",
+      "Gives an explicit verdict of ready / fix first / don't push"
+    ]
+  }
+]
