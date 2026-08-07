@@ -18,7 +18,12 @@ Shared Claude knowledge, skills, and agent blueprints for the leadership team.
 baseline/       Company-wide context — upload to every Claude Project
 skills/         Task-specific prompt templates — copy-paste into conversations
 agents/         Full Claude Project blueprints — instructions + knowledge files
+
+.claude/skills/ Claude Code skills — run automatically inside a Claude Code session
+personal/       Working files those skills read and write (goals, reviews, decisions)
 ```
+
+The top three are for **claude.ai Projects** — you copy or upload them by hand. The bottom two are for **Claude Code** — Claude picks them up on its own. See [Claude Code skills](#claude-code-skills) below.
 
 ## Baseline
 
@@ -52,6 +57,44 @@ Full Claude Project configs. Each folder contains `instructions.md` (custom inst
 | `sales-engineer` | Scoping, proposals, solution design |
 | `security-reviewer` | Policy review, risk assessment, compliance |
 | `client-strategist` | Account planning, upsell identification, retention |
+
+## Claude Code skills
+
+Everything above is for claude.ai Projects — you copy a template into a conversation, or upload knowledge files by hand. The skills in `.claude/skills/` are different: they only apply in **Claude Code**, and Claude loads them itself when the work matches. You don't paste anything.
+
+Two ways to use one:
+
+- **Just work.** Say "get me up to speed on this repo" and `repo-onboard` loads on its own. Each skill's description lists the phrasings that trigger it.
+- **Call it by name** — `/ship-check`, `/weekly-review` — when you want a specific one.
+
+They're personal working tools rather than company templates, and they carry no MSP or company-specific assumptions, so they're useful in any repo you open this hub alongside.
+
+| Skill | What it does |
+|-------|-------------|
+| `repo-onboard` | Map an unfamiliar codebase: how to run it, its entry points, one traced request path, where a change belongs |
+| `ship-check` | Pre-push review — scope creep, debug leftovers, committed secrets, weak commit messages |
+| `debug-loop` | Disciplined debugging once the obvious fix has failed: reproduce, hypothesis log, bisect |
+| `notes-to-actions` | Raw meeting notes into decisions, owned actions, open questions, and a follow-up draft |
+| `digest` | A pile of links or docs into one briefing — what's claimed, where sources disagree, what to do |
+| `draft` | Write or tighten anything, in your voice as recorded in `personal/voice.md` |
+| `weekly-review` | Friday review built from git history rather than memory, written to `personal/reviews/` |
+| `decision-log` | Record a decision with its real reasoning and what would change your mind |
+| `goals` | Keep goals observable, and force a decision on anything that's gone stale |
+
+Two of them ship with scripts that do the mechanical part before Claude reasons about the result:
+
+```bash
+.claude/skills/ship-check/scan.sh                  # scan the branch diff for problems
+.claude/skills/weekly-review/git-week.sh -s ~/code # what you committed this week, all repos
+```
+
+Both are read-only and take `-h` or a base ref as an argument.
+
+### Getting started
+
+Open Claude Code in this repo and run `/goals`, then `/draft` to build your voice profile from a few writing samples. `/weekly-review` gets more useful each week, since it compares against the last one.
+
+See [`personal/README.md`](personal/README.md) for where each skill stores its output — **including a note on privacy if this repo is shared with your team.**
 
 ## Contributing
 
